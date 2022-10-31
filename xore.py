@@ -4,12 +4,13 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from PIL import Image
 
-dl_folder = "C:/WORK/DL0/"
-cats_dir = dl_folder + "vmesto/Cat/"
-dogs_dir = dl_folder + "vmesto/Dog/"
+dl_folder = "C:/WORK/DL0/"                  # 
+cats_dir = dl_folder + "vmesto/Cat/"        # cat's images
+dogs_dir = dl_folder + "vmesto/Dog/"        # dogs
 
 cats = os.listdir(cats_dir)
 dogs = os.listdir(dogs_dir)
+
 
 def get_masked (orig, leva = 1, shift_y = 1, shift_x = 1):
     orig = orig.copy()                      # make a copy because original is read-only
@@ -35,5 +36,3 @@ for ind in range(len(dogs)):
     shit = get_masked(ori, 2)
     im = Image.fromarray(shit)
     im.save(dl_folder + "mask20/Dog/" + dogs[ind])
-
-
