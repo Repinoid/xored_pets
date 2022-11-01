@@ -4,7 +4,8 @@ Original code from https://keras.io/examples/vision/image_classification_from_sc
 Training  ~3000 Cats & 3000 Dogs pix
 
 It was an idea to check training process on changed images
-Original pixels were masked by nearest pixel (right & down) - XOR operation
+
+Original pixels were masked by nearest pixel (y+1, x+1) - XOR operation
 
 One pix set was XORed 100%, second - on half, by 50% RGB value of near pixel
 
