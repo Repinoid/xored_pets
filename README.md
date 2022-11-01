@@ -5,7 +5,7 @@ Set ~3000 Cats & 3000 Dogs pix, part of Kaggle Cats vs Dogs dataset
 
 It was an idea to check training process on changed images
 
-Original pixels were masked by nearest pixel (y+1, x+1) - XOR operation
+Original pixels were masked by nearest pixel (y+1, x+1) - XOR operation (xore.py file)
 
 One pix set was XORed 100%, second - on half, by 50% RGB value of near pixel
 
