@@ -1,7 +1,7 @@
 # xored_pets
 Original code from https://keras.io/examples/vision/image_classification_from_scratch/
 
-Training  ~3000 Cats & 3000 Dogs pix
+Set ~3000 Cats & 3000 Dogs pix, part of Kaggle Cats vs Dogs dataset
 
 It was an idea to check training process on changed images
 
