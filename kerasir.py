@@ -1,17 +1,24 @@
+# made on base https://keras.io/examples/vision/image_classification_from_scratch/
+
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
+import json
 import tensorflow as tf
 from tensorflow import keras
 from keras import layers
 import matplotlib.pyplot as plt
+import pandas as pd
+import pickle
 from keras.utils import plot_model
 
 image_size = (180, 180)
 batch_size = 32
 
+ipath = "C:/WORK/DL0/mask20"
+
 train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-    "PetImages1",
+    ipath,
     validation_split=0.2,
     subset="training",
     seed=1337,
@@ -19,7 +26,7 @@ train_ds = tf.keras.preprocessing.image_dataset_from_directory(
     batch_size=batch_size,
 )
 val_ds = tf.keras.preprocessing.image_dataset_from_directory(
-    "PetImages1",
+    ipath,
     validation_split=0.2,
     subset="validation",
     seed=1337,
@@ -34,6 +41,7 @@ for images, labels in train_ds.take(1):
         plt.imshow(images[i].numpy().astype("uint8"))
         plt.title(int(labels[i]))
         plt.axis("off")
+plt.show()
 
 data_augmentation = keras.Sequential(
     [
@@ -62,7 +70,6 @@ def make_model(input_shape, num_classes):
     previous_block_activation = x  # Set aside residual
 
     for size in [128, 256, 512, 728]:
-#    for size in [128, 256]:
         x = layers.Activation("relu")(x)
         x = layers.SeparableConv2D(size, 3, padding="same")(x)
         x = layers.BatchNormalization()(x)
@@ -100,20 +107,33 @@ def make_model(input_shape, num_classes):
 model = make_model(input_shape=image_size + (3,), num_classes=2)
 tf.keras.utils.plot_model(model, show_shapes=True)
 
-epochs = 5
+epochs = 14
 
 callbacks = [
-    tf.keras.callbacks.ModelCheckpoint("save_at_{epoch}.keras"),
+    tf.keras.callbacks.ModelCheckpoint("Masked_at_{epoch}.keras"),
 ]
 model.compile(
     optimizer=tf.keras.optimizers.Adam(1e-3),
     loss="binary_crossentropy",
     metrics=["accuracy"],
 )
-model.fit(
+results = model.fit(
     train_ds,
     epochs=epochs,
     callbacks=callbacks,
     validation_data=val_ds,
 )
+plt.plot(results.history['accuracy'], label='train')
+plt.plot(results.history['val_accuracy'], label='test')
+plt.legend()
+plt.show()
 
+with open('res_Shift2.pi', 'wb') as file_pi:
+    pickle.dump(results.history, file_pi)
+
+hist_df = pd.DataFrame(results.history)
+hist_json_file = 'history2.json'
+with open(hist_json_file, mode='w') as f:
+    hist_df.to_json(f)
+
+exit(0)
